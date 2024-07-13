@@ -41,3 +41,11 @@ def print_enum(enum_val) -> str:
         return as_string_pri_sec(enum_val)
     else:
         return "???"
+
+
+
+# Example usage of the enums and utility functions
+print(print_enum(PrintMode.LINE_MODE))       # Output: LINE_MODE
+print(print_enum(PrintMode.VERBOSE_MODE))    # Output: VERBOSE_MODE
+print(print_enum(PriSec.PRIMARY))            # Output: PRIMARY
+print(print_enum(PriSec.SECONDARY))          # Output: SECONDARY

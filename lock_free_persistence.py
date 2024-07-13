@@ -5,22 +5,22 @@ from collections import deque
 SEGMENT_SIZE = 4 * 1024 * 1024  # 4MB
 MAX_SEGMENTS = 32767
 
-class LockFreeJournal:
-    def __init__(self, journal_name):
-        self.journal_name = journal_name
+class LockFreePersistence:
+    def __init__(self, persistence_name):
+        self.persistence_name = persistence_name
         self.streams = {}
         self.lock = threading.Lock()
-        self.init_journal()
+        self.init_persistence()
 
-    def init_journal(self):
-        if not os.path.exists(self.journal_name):
-            os.makedirs(self.journal_name)
-        self.streams[0] = LockFreeStream(0, os.path.join(self.journal_name, "stream_0"))
+    def init_persistence(self):
+        if not os.path.exists(self.persistence_name):
+            os.makedirs(self.persistence_name)
+        self.streams[0] = LockFreeStream(0, os.path.join(self.persistence_name, "stream_0"))
 
     def create_stream(self, stream_id):
         with self.lock:
             if stream_id not in self.streams:
-                self.streams[stream_id] = LockFreeStream(stream_id, os.path.join(self.journal_name, f"stream_{stream_id}"))
+                self.streams[stream_id] = LockFreeStream(stream_id, os.path.join(self.persistence_name, f"stream_{stream_id}"))
 
     def write_to_stream(self, stream_id, data):
         if stream_id in self.streams:
@@ -68,13 +68,13 @@ class LockFreeStream:
             return f.read()
 
 # Example usage
-journal = LockFreeJournal("my_journal")
-journal.create_stream(1)
+persistence = LockFreepersistence("my_persistence")
+persistence.create_stream(1)
 
 # Writing to streams
-journal.write_to_stream(0, "Hello, Stream 0!")
-journal.write_to_stream(1, "Hello, Stream 1!")
+persistence.write_to_stream(0, "Hello, Stream 0!")
+persistence.write_to_stream(1, "Hello, Stream 1!")
 
 # Reading from streams
-print(journal.read_from_stream(0))
-print(journal.read_from_stream(1))
+print(persistence.read_from_stream(0))
+print(persistence.read_from_stream(1))

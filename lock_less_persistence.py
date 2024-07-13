@@ -5,7 +5,7 @@ from collections import deque
 SEGMENT_SIZE = 4 * 1024 * 1024  # 4MB
 MAX_SEGMENTS = 32767
 
-class LockFreePersistence:
+class LockLessPersistence:
     def __init__(self, persistence_name):
         self.persistence_name = persistence_name
         self.streams = {}
@@ -34,7 +34,7 @@ class LockFreePersistence:
         else:
             raise ValueError(f"Stream {stream_id} does not exist.")
 
-class LockFreeStream:
+class LockLessStream:
     def __init__(self, stream_id, file_path):
         self.stream_id = stream_id
         self.file_path = file_path
@@ -68,7 +68,7 @@ class LockFreeStream:
             return f.read()
 
 # Example usage
-persistence = LockFreepersistence("my_persistence")
+persistence = LockLessPersistence("my_persistence")
 persistence.create_stream(1)
 
 # Writing to streams
